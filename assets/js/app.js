@@ -280,7 +280,10 @@ const App = {
     const opSym = this.currentDecOp === 'gof' ? '(g ∘ f)' : '(f ∘ g)';
     const inv = CipherEngine.deriveInverse(comp.compA, comp.compB, opSym);
 
-    document.getElementById('dec-formula-invers').innerText = inv.formulaString;
+    const invFormulaEl = document.getElementById('dec-formula-invers');
+    if (invFormulaEl) {
+      invFormulaEl.innerHTML = inv.formulaHTML || inv.formulaString;
+    }
 
     // Render 6 Detailed Educational Steps for Inversion
     const stepsContainer = document.getElementById('edu-steps-decrypt');
@@ -465,7 +468,7 @@ const App = {
   },
 
   loadSample() {
-    document.getElementById('input-cipher').value = '19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19';
+    document.getElementById('input-cipher').value = '19, 37, 67, 79, 13, 91, 19, 67, 97, 13, 25, 103, 85, 19';
     document.getElementById('dec-select-fx').value = 'F1';
     document.getElementById('dec-select-gx').value = 'G1';
     this.setDecOperation('gof');

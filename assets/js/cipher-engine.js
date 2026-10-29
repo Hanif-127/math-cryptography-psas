@@ -181,8 +181,9 @@ const CipherEngine = {
     ];
 
     const formulaString = `${opSymbol}⁻¹(y) = (y ${bSign}) / ${compA}`;
+    const formulaHTML = `<span class="inline-flex items-center gap-1 font-mono font-bold">${opSymbol}⁻¹(y) = ${fractionHTML}</span>`;
 
-    return { compA, compB, steps, formulaString };
+    return { compA, compB, steps, formulaString, formulaHTML };
   },
 
   // 4. Contoh Bedah Kasus Nyata (Enkripsi Satu Karakter)
@@ -266,7 +267,7 @@ const CipherEngine = {
       }
     });
 
-    return { rows, cipherNumbers, cipherString: cipherNumbers.join(' - ') };
+    return { rows, cipherNumbers, cipherString: cipherNumbers.join(', ') };
   },
 
   // 7. Dekripsi Deretan Angka

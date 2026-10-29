@@ -257,11 +257,11 @@
 
         <!-- Tahap 1: Penurunan Komposisi Aljabar Lengkap -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-              <span>Tahap 1: Pembuktian Penurunan Fungsi Komposisi (6 Langkah Runtut)</span>
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 1: Pembuktian Rumus Komposisi (6 Langkah)
             </span>
-            <span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+            <span class="text-[10px] sm:text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
               Aljabar Lengkap
             </span>
           </div>
@@ -272,11 +272,11 @@
 
         <!-- Tahap 2: Bedah Kasus Nyata (Contoh Hitung Karakter Pertama) -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
             <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
-              Tahap 2: Bedah Kasus Nyata (Perhitungan Step-by-Step Karakter Pertama)
+              Tahap 2: Bedah Contoh Karakter Pertama
             </span>
-            <span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+            <span class="text-[10px] sm:text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
               Contoh Nyata
             </span>
           </div>
@@ -296,9 +296,9 @@
 
         <!-- Tahap 3: Kuantifikasi & Substitusi Table -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
             <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
-              Tahap 3: Tabel Kuantifikasi Huruf & Evaluasi Hasil Sandi Seluruh Pesan
+              Tahap 3: Tabel Kuantifikasi & Evaluasi Sandi
             </span>
             <span class="sm:hidden text-[11px] text-slate-500 flex items-center gap-1 font-medium">
               <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-slate-400"></i> Geser &rarr;
@@ -323,22 +323,22 @@
         </div>
 
         <!-- Step 3: Deretan Angka Sandi Final -->
-        <div class="bg-slate-900 text-white rounded-2xl p-5 sm:p-6 space-y-3 shadow-md">
+        <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-6 space-y-3 shadow-md">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <span class="text-xs font-bold tracking-wider uppercase text-rose-300">DERETAN ANGKA SANDI (SIAP DISERAHKAN KE PENERIMA):</span>
-            <div class="flex items-center gap-2">
-              <button onclick="App.copyCipher()" class="px-3.5 py-1.5 bg-telkom-600 hover:bg-telkom-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+            <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+              <button onclick="App.copyCipher()" class="py-2.5 px-3 bg-telkom-600 hover:bg-telkom-700 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                Salin Sandi
+                <span>Salin Sandi</span>
               </button>
-              <button onclick="App.goToDecrypt()" class="px-3.5 py-1.5 bg-rose-950/90 hover:bg-rose-900 border border-rose-500/60 text-rose-200 hover:text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+              <button onclick="App.goToDecrypt()" class="py-2.5 px-3 bg-rose-950/90 hover:bg-rose-900 border border-rose-500/60 text-rose-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
                 <i data-lucide="arrow-right-circle" class="w-3.5 h-3.5 text-rose-400"></i>
-                Uji di Dekripsi &rarr;
+                <span>Uji di Dekripsi &rarr;</span>
               </button>
             </div>
           </div>
-          <div id="final-cipher-string" class="text-xl sm:text-2xl font-mono font-black text-rose-400 tracking-widest break-all">
-            19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19
+          <div id="final-cipher-string" class="text-base sm:text-lg font-mono font-bold text-rose-300 leading-relaxed tracking-normal select-all bg-slate-950/80 p-3.5 rounded-xl border border-rose-900/40 break-words">
+            19, 37, 67, 79, 13, 91, 19, 67, 97, 13, 25, 103, 85, 19
           </div>
           <p class="text-xs text-slate-400 flex items-center gap-1.5">
             <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-400"></i>
@@ -458,8 +458,10 @@
             </div>
 
             <div class="bg-white border border-slate-200 rounded-xl p-3 text-center shadow-sm">
-              <span class="text-[11px] text-slate-400 block font-semibold">Rumus Invers Dekripsi:</span>
-              <span id="dec-formula-invers" class="text-base font-mono font-extrabold text-sky-800">(g ∘ f)⁻¹(y) = (y - 13) / 6</span>
+              <span class="text-[11px] text-slate-400 block font-semibold mb-1">Rumus Invers Dekripsi:</span>
+              <div id="dec-formula-invers" class="flex items-center justify-center font-mono font-bold text-sky-800 text-sm sm:text-base py-0.5">
+                <span class="inline-flex items-center gap-1 font-mono font-bold">(g ∘ f)⁻¹(y) = <span class="inline-flex flex-col text-center align-middle mx-1 font-mono font-bold text-xs sm:text-sm"><span class="border-b-2 border-slate-700 px-1 pb-0.5 leading-tight">y - 13</span><span class="pt-0.5 leading-tight">6</span></span></span>
+              </div>
             </div>
           </div>
 
@@ -467,20 +469,20 @@
 
         <!-- Input Kode Sandi -->
         <div class="space-y-3">
-          <label class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <label class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
             <i data-lucide="hash" class="w-4 h-4 text-sky-600"></i>
-            Masukkan Deretan Angka Sandi dari Lawan Main (Pisahkan dengan strip, spasi, atau koma):
+            Masukkan Deretan Angka Sandi dari Lawan Main (Pisahkan dengan koma atau spasi):
           </label>
-          <textarea id="input-cipher" rows="2" oninput="App.updateDecryption()" placeholder="Contoh: 19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19" class="w-full bg-white border-2 border-slate-200 rounded-xl p-4 text-base sm:text-lg font-mono font-bold tracking-wider text-slate-900 focus:outline-none focus:border-sky-600 focus:ring-4 focus:ring-sky-50 transition shadow-inner">19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19</textarea>
+          <textarea id="input-cipher" rows="2" oninput="App.updateDecryption()" placeholder="Contoh: 19, 37, 67, 79, 13, 91, 19, 67, 97, 13, 25, 103, 85, 19" class="w-full bg-white border-2 border-slate-200 rounded-xl p-3.5 sm:p-4 text-sm sm:text-base font-mono font-bold tracking-normal text-slate-900 focus:outline-none focus:border-sky-600 focus:ring-4 focus:ring-sky-50 transition shadow-inner break-words">19, 37, 67, 79, 13, 91, 19, 67, 97, 13, 25, 103, 85, 19</textarea>
         </div>
 
         <!-- Tahap 1: Penurunan Aljabar Invers Lengkap (Educational) -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-              <span>Tahap 1: Langkah Aljabar Isolasi Variabel (Penurunan Invers 6 Tahap)</span>
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 1: Penurunan Rumus Invers (6 Langkah)
             </span>
-            <span class="text-[11px] font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
+            <span class="text-[10px] sm:text-[11px] font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
               Aljabar Lengkap
             </span>
           </div>
@@ -491,11 +493,11 @@
 
         <!-- Tahap 2: Bedah Kasus Nyata (Contoh Hitung Pembalikan Sandi Pertama) -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
             <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
-              Tahap 2: Bedah Kasus Nyata (Pembalikan Invers Step-by-Step Sandi Pertama)
+              Tahap 2: Bedah Pembalikan Sandi Pertama
             </span>
-            <span class="text-[11px] font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
+            <span class="text-[10px] sm:text-[11px] font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
               Contoh Nyata
             </span>
           </div>
@@ -506,9 +508,9 @@
 
         <!-- Tahap 3: Evaluasi Invers Table -->
         <div class="space-y-3">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-1.5">
             <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
-              Tahap 3: Hasil Evaluasi Invers & Penerjemahan Seluruh Deretan Sandi
+              Tahap 3: Tabel Evaluasi Invers Seluruh Sandi
             </span>
             <span class="sm:hidden text-[11px] text-slate-500 flex items-center gap-1 font-medium">
               <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-slate-400"></i> Geser &rarr;
@@ -704,7 +706,7 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 space-y-2">
+  <footer class="border-t border-slate-200 bg-white py-6 pb-24 sm:pb-8 text-center text-xs text-slate-500 space-y-2">
     <div class="flex items-center justify-center gap-2">
       <img src="assets/images/logo-telkom-schools.png" alt="Logo Telkom Schools" class="w-6 h-6 object-contain">
       <span class="font-extrabold text-slate-800 tracking-tight">SMK TELKOM PURWOKERTO</span>

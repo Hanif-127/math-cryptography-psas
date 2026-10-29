@@ -102,8 +102,14 @@ code, kbd, samp, pre, .font-mono {
     word-break: break-word;
   }
 
-  /* Safe area padding for notch devices */
+  /* Safe area padding for notch devices & mobile overlays */
   footer {
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Prevent numbers from splitting awkwardly across lines */
+  #final-cipher-string, #input-cipher {
+    word-break: normal;
+    overflow-wrap: break-word;
   }
 }
