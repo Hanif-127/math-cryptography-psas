@@ -435,11 +435,11 @@ const App = {
       const char = String.fromCharCode(64 + i);
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-telkom-500 rounded-2xl py-3 px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
+      btn.className = 'calc-key-btn bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-telkom-500 rounded-2xl py-2.5 px-1.5 sm:py-3 sm:px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
       btn.onclick = () => App.calcPressKey(char);
       btn.innerHTML = `
-        <span class="text-2xl font-black text-slate-900 group-hover:text-telkom-700 leading-none">${char}</span>
-        <span class="text-xs font-extrabold text-telkom-700 bg-rose-50 group-hover:bg-rose-100 px-2 py-0.5 rounded-full border border-rose-200/80">${i}</span>
+        <span class="text-xl sm:text-2xl font-black text-slate-900 group-hover:text-telkom-700 leading-none">${char}</span>
+        <span class="text-[11px] sm:text-xs font-extrabold text-telkom-700 bg-rose-50 group-hover:bg-rose-100 px-2 py-0.5 rounded-full border border-rose-200/80">${i}</span>
       `;
       grid.appendChild(btn);
     }
@@ -447,11 +447,11 @@ const App = {
     // Kotak ke-27: SPASI = 0 (Menjadikan tepat 9 baris x 3 kolom)
     const spaceBtn = document.createElement('button');
     spaceBtn.type = 'button';
-    spaceBtn.className = 'bg-slate-100 hover:bg-rose-50 border-2 border-dashed border-rose-300 hover:border-telkom-500 rounded-2xl py-3 px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
+    spaceBtn.className = 'calc-key-btn bg-slate-100 hover:bg-rose-50 border-2 border-dashed border-rose-300 hover:border-telkom-500 rounded-2xl py-2.5 px-1.5 sm:py-3 sm:px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
     spaceBtn.onclick = () => App.calcPressKey(' ');
     spaceBtn.innerHTML = `
-      <span class="text-sm font-black text-slate-800 group-hover:text-telkom-700 leading-none flex items-center gap-1">␣ SPASI</span>
-      <span class="text-xs font-black text-white bg-telkom-700 px-2.5 py-0.5 rounded-full shadow-2xs">0</span>
+      <span class="text-xs sm:text-sm font-black text-slate-800 group-hover:text-telkom-700 leading-none flex items-center gap-1">␣ SPASI</span>
+      <span class="text-[11px] sm:text-xs font-black text-white bg-telkom-700 px-2.5 py-0.5 rounded-full shadow-2xs">0</span>
     `;
     grid.appendChild(spaceBtn);
 

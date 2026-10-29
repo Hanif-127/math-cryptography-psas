@@ -125,3 +125,10 @@ code, kbd, samp, pre, .font-mono {
 .calc-key-btn:active {
   transform: scale(0.94);
 }
+
+/* Calculator Keypad Scroll & Containment (Prevents Page Scroll Jump / Bug) */
+.calc-keypad-scroll {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
