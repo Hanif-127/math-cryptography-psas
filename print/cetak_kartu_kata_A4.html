@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Lembar Cetak 32 Kartu Kata (4x5 cm - Jarak 0.5mm)</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0;
+      color: #f8fafc;
+    }
+    .no-print-bar {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: 16px 28px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-width: 680px;
+      border: 1px solid #334155;
+    }
+    .no-print-bar button {
+      background: #f59e0b;
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+    .no-print-bar button:hover {
+      background: #d97706;
+      transform: translateY(-1px);
+    }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      max-height: 297mm;
+      background: #ffffff;
+      margin-bottom: 25mm;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      page-break-after: always;
+      display: grid;
+      grid-template-columns: repeat(4, 40mm);
+      grid-template-rows: repeat(5, 50mm);
+      gap: 0.5mm;
+      justify-content: center;
+      align-content: center;
+      position: relative;
+    }
+    .card-slot {
+      width: 40mm;
+      height: 50mm;
+      position: relative;
+      overflow: hidden;
+      outline: 0.5px solid #cbd5e1; /* Panduan garis potong tipis */
+      background: #000;
+    }
+    .card-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+      }
+      .no-print-bar {
+        display: none !important;
+      }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print-bar">
+    <h2 style="font-size: 18px; margin-bottom: 6px; color: #fbbf24;">SECRET MESSAGE — Lembar Cetak Kartu Kata</h2>
+    <p>Jarak antar kartu dirapatkan menjadi <strong>0.5 mm</strong> untuk mempermudah pemotongan menggunakan penggaris & cutter.</p>
+    <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Ukuran per kartu: 40 x 50 mm (4 x 5 cm) | Grid 4 &times; 5 kartu per lembar A4</p>
+    <button onclick="window.print()">🖨️ Cetak / Print Sekarang (A4)</button>
+  </div>
+
+  <!-- Halaman 1: K-01 sampai K-20 (4 kolom x 5 baris) -->
+  <div class="page">
+    <div class="card-slot"><img src="../assets/images/cards/K-01.jpeg" alt="K-01"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-02.jpeg" alt="K-02"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-03.jpeg" alt="K-03"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-04.jpeg" alt="K-04"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-05.jpeg" alt="K-05"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-06.jpeg" alt="K-06"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-07.jpeg" alt="K-07"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-08.jpeg" alt="K-08"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-09.jpeg" alt="K-09"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-10.jpeg" alt="K-10"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-11.jpeg" alt="K-11"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-12.jpeg" alt="K-12"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-13.jpeg" alt="K-13"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-14.jpeg" alt="K-14"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-15.jpeg" alt="K-15"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-16.jpeg" alt="K-16"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-17.jpeg" alt="K-17"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-18.jpeg" alt="K-18"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-19.jpeg" alt="K-19"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-20.jpeg" alt="K-20"></div>
+  </div>
+
+  <!-- Halaman 2: K-21 sampai K-32 (12 kartu) -->
+  <div class="page">
+    <div class="card-slot"><img src="../assets/images/cards/K-21.jpeg" alt="K-21"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-22.jpeg" alt="K-22"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-23.jpeg" alt="K-23"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-24.jpeg" alt="K-24"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-25.jpeg" alt="K-25"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-26.jpeg" alt="K-26"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-27.jpeg" alt="K-27"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-28.jpeg" alt="K-28"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-29.jpeg" alt="K-29"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-30.jpeg" alt="K-30"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-31.jpeg" alt="K-31"></div>
+    <div class="card-slot"><img src="../assets/images/cards/K-32.jpeg" alt="K-32"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cetak Lembar Kerja A5 (Wipe & Clean Board)</title>
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 6mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #f8fafc;
+    }
+    .no-print-bar {
+      background: #1e293b;
+      padding: 18px 30px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      max-width: 850px;
+      border: 1px solid #334155;
+    }
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      color: #ffffff;
+      font-weight: 700;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #e11d48;
+    }
+    .btn-primary:hover {
+      background: #be123c;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #334155;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin: 20px 0 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+    .sheet-a4 {
+      width: 297mm;
+      height: 210mm;
+      max-height: 210mm;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5mm;
+      padding: 5mm;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+      page-break-after: always;
+      margin-bottom: 20mm;
+    }
+    .a5-container {
+      width: 141mm;
+      height: 200mm;
+      position: relative;
+      border: 1px dashed #cbd5e1;
+      overflow: hidden;
+      border-radius: 2mm;
+    }
+    .a5-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+      }
+      .no-print-bar, .section-title {
+        display: none !important;
+      }
+      .sheet-a4 {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print-bar">
+    <h2 style="font-size: 20px; margin-bottom: 6px; color: #f43f5e;">SECRET MESSAGE — Lembar Kerja Siswa A5 (Wipe & Clean)</h2>
+    <p>Versi 2 Kosongan Bebas: <strong>Title, Subtitle, Kotak Kosong Gede, dan Tabel Huruf</strong>.<br>Format siap cetak di kertas A4 Landscape (2 lembar A5 bersebelahan, siap potong & laminasi).</p>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak Halaman (Ctrl + P)</button>
+    </div>
+  </div>
+
+  <!-- LEMBAR 1: VERSI 2 BEBAS POLOS (PUTIH TOTAL) -->
+  <div class="section-title">Lembar A4: 2x Versi 2 Kosong Bebas (Plain Whiteboard)</div>
+  <div class="sheet-a4">
+    <div class="a5-container">
+      <img src="../assets/images/cards/Lembar_Kerja_A5.jpeg" alt="Versi 2 Bebas Polos">
+    </div>
+    <div class="a5-container">
+      <img src="../assets/images/cards/Lembar_Kerja_A5.jpeg" alt="Versi 2 Bebas Polos">
+    </div>
+  </div>
+
+  <!-- LEMBAR 2: VERSI 2 BEBAS DENGAN TITIK HALUS (DOT GRID) -->
+  <div class="section-title">Lembar A4: 2x Versi 2 Kosong Bebas (Dot Grid Halus)</div>
+  <div class="sheet-a4">
+    <div class="a5-container">
+      <img src="../assets/images/cards/Lembar_Kerja_A5.jpeg" alt="Versi 2 Dot Grid">
+    </div>
+    <div class="a5-container">
+      <img src="../assets/images/cards/Lembar_Kerja_A5.jpeg" alt="Versi 2 Dot Grid">
+    </div>
+  </div>
+</body>
+</html>

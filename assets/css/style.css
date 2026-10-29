@@ -1,0 +1,109 @@
+/* SECRET MESSAGE — Clean White & Editorial Light Theme */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #0f172a;
+  --color-secondary: #475569;
+  --color-accent: #be123c;
+  --color-accent-light: #ffe4e6;
+  --color-border: #e2e8f0;
+  --color-bg-card: #ffffff;
+  --color-bg-page: #fafbfc;
+}
+
+body {
+  background-color: var(--color-bg-page);
+  color: var(--color-primary);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+code, kbd, samp, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Tab button active state */
+.tab-btn.active {
+  background-color: #be123c !important;
+  color: #ffffff !important;
+  border-color: #be123c !important;
+  box-shadow: 0 4px 12px rgba(190, 18, 60, 0.18);
+}
+
+/* Educational Formula Color Coding */
+.fx-color {
+  color: #0284c7;
+  font-weight: 700;
+}
+.gx-color {
+  color: #059669;
+  font-weight: 700;
+}
+.comp-color {
+  color: #be123c;
+  font-weight: 800;
+}
+
+/* Interactive Card Hover */
+.card-hover-effect {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card-hover-effect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+}
+
+/* Modal Animation */
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-animate {
+  animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pulse animation for active NFC indicator */
+@keyframes ambientPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.6; }
+}
+.nfc-pulse {
+  animation: ambientPulse 2s infinite ease-in-out;
+}
+
+/* Mobile Responsiveness & Touch Optimizations */
+@media (max-width: 640px) {
+  body {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smooth momentum scrolling on mobile browsers */
+  .overflow-x-auto, .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Responsive formula font scaling */
+  .comp-color, .fx-color, .gx-color {
+    word-break: break-word;
+  }
+
+  /* Safe area padding for notch devices */
+  footer {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+}

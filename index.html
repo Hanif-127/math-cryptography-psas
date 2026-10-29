@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SECRET MESSAGE — Digital Companion Belajar Kriptografi Matematika</title>
+  <meta name="description" content="Aplikasi Web Pendamping Pembelajaran Game Kartu Matematika Fungsi Komposisi & Invers untuk Siswa XI PPLG SMK Telkom Purwokerto.">
+  
+  <!-- Favicon (Telkom Schools Official Logo) -->
+  <link rel="icon" type="image/png" href="assets/images/logo-telkom-schools.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            telkom: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-rose-100 selection:text-rose-900">
+
+  <!-- ======================================================== -->
+  <!-- TOP BRANDING & NAVIGATION BAR (STUDENT-FOCUSED) -->
+  <!-- ======================================================== -->
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & School Brand -->
+        <div class="flex items-center gap-3">
+          <img src="assets/images/logo-telkom-schools.png" alt="Logo Telkom Schools" class="w-10 h-10 object-contain shrink-0 drop-shadow-xs">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg">SECRET MESSAGE</span>
+              <span class="text-[10px] sm:text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full bg-rose-50 text-telkom-700 border border-rose-200">PSAS MATEMATIKA</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-500 font-medium">SMK Telkom Purwokerto • XI PPLG 1</p>
+          </div>
+        </div>
+
+        <!-- Student Gameplay Navigation (NO Print tab, NO NFC tab) -->
+        <nav class="hidden md:flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
+          <button onclick="App.switchTab('tab-encrypt')" id="btn-tab-encrypt" class="tab-btn active px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            Enkripsi (Pengirim)
+          </button>
+          <button onclick="App.switchTab('tab-decrypt')" id="btn-tab-decrypt" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            Dekripsi (Penerima)
+          </button>
+          <button onclick="App.switchTab('tab-alphabet')" id="btn-tab-alphabet" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+            Tabel Huruf
+          </button>
+          <button onclick="App.switchTab('tab-rules')" id="btn-tab-rules" class="tab-btn text-slate-600 hover:text-slate-900 px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            Aturan & Panduan
+          </button>
+        </nav>
+
+        <!-- School Level Info -->
+        <div class="hidden sm:flex items-center gap-2">
+          <span class="text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-200">
+            Tahun Ajaran 2026/2027
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Bar (Sticky Thumb-Friendly Grid) -->
+    <div class="md:hidden border-t border-slate-200/90 px-2 py-2 grid grid-cols-4 gap-1.5 bg-white/95 backdrop-blur-md sticky top-16 z-30 shadow-xs">
+      <button onclick="App.switchTab('tab-encrypt')" id="m-btn-tab-encrypt" class="tab-btn active py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 transition">
+        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+        <span>Enkripsi</span>
+      </button>
+      <button onclick="App.switchTab('tab-decrypt')" id="m-btn-tab-decrypt" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+        <span>Dekripsi</span>
+      </button>
+      <button onclick="App.switchTab('tab-alphabet')" id="m-btn-tab-alphabet" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+        <span>Huruf</span>
+      </button>
+      <button onclick="App.switchTab('tab-rules')" id="m-btn-tab-rules" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span>Panduan</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======================================================== -->
+  <!-- MAIN CONTENT CONTAINER -->
+  <!-- ======================================================== -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: ENKRIPSI (PENGIRIM PESAN & PEMAHAMAN KOMPOSISI) -->
+    <!-- ======================================================== -->
+    <section id="tab-encrypt" class="space-y-6">
+      
+      <!-- Educational Header Banner -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 text-telkom-700 text-xs font-extrabold mb-2">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+              PERAN: PENGIRIM PESAN (ENKRIPSI)
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Kalkulator & Modul Belajar Komposisi</h1>
+            <p class="text-slate-600 text-sm mt-1">Pilih kartu fungsi atau tempelkan kartu ber-NFC, lalu amati bagaimana aljabar bekerja menggabungkan dua fungsi menjadi sandi rahasia.</p>
+          </div>
+        </div>
+
+        <!-- 3-Column Configuration: Kartu f(x), Kartu g(x), Urutan Operasi -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+          
+          <!-- Column 1: Kartu f(x) -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">1. Kartu Fungsi f(x)</span>
+                <span id="badge-fx" class="px-2.5 py-0.5 rounded text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">F-01</span>
+              </div>
+              <select id="select-fx" onchange="App.updateEncryption()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <option value="F1">F-01 : f(x) = 2x + 5</option>
+                <option value="F2">F-02 : f(x) = 3x + 1</option>
+                <option value="F3">F-03 : f(x) = x + 4</option>
+                <option value="F4">F-04 : f(x) = 4x - 3</option>
+                <option value="F5">F-05 : f(x) = 5x + 2</option>
+              </select>
+            </div>
+            
+            <!-- Real Visual Card Thumbnail -->
+            <div class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <img id="img-thumb-fx" src="assets/images/cards/F-01.jpeg" alt="F-01" class="w-14 h-20 rounded-md object-cover border border-slate-200 shadow-inner">
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Rumus Terpilih:</span>
+                <span id="formula-fx" class="text-lg font-mono font-bold text-sky-700">f(x) = 2x + 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Kartu g(x) -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">2. Kartu Fungsi g(x)</span>
+                <span id="badge-gx" class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">G-01</span>
+              </div>
+              <select id="select-gx" onchange="App.updateEncryption()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                <option value="G1">G-01 : g(x) = 3x - 2</option>
+                <option value="G2">G-02 : g(x) = 2x + 3</option>
+                <option value="G3">G-03 : g(x) = 4x + 1</option>
+                <option value="G4">G-04 : g(x) = 2x - 1</option>
+                <option value="G5">G-05 : g(x) = x + 5</option>
+              </select>
+            </div>
+
+            <!-- Real Visual Card Thumbnail -->
+            <div class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <img id="img-thumb-gx" src="assets/images/cards/G-01.jpeg" alt="G-01" class="w-14 h-20 rounded-md object-cover border border-slate-200 shadow-inner">
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Rumus Terpilih:</span>
+                <span id="formula-gx" class="text-lg font-mono font-bold text-emerald-700">g(x) = 3x - 2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Urutan Komposisi -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">3. Urutan Komposisi</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Pilih Operasi</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="App.setOperation('gof')" id="btn-op-gof" class="py-2.5 px-3 rounded-xl border-2 border-telkom-600 bg-rose-50/50 font-mono font-extrabold text-sm text-telkom-800 shadow-sm flex items-center justify-center gap-1.5 transition">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-telkom-600"></i>
+                  (g ∘ f)(x)
+                </button>
+                <button onclick="App.setOperation('fog')" id="btn-op-fog" class="py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-mono font-semibold text-sm text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-1.5 transition">
+                  (f ∘ g)(x)
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-3 text-center shadow-sm">
+              <span class="text-[11px] text-slate-400 block font-semibold">Rumus Enkripsi Tunggal:</span>
+              <span id="formula-comp" class="text-lg font-mono font-extrabold text-telkom-700">(g ∘ f)(x) = 6x + 13</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Input Kalimat Pesan Asli -->
+        <div class="mt-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i data-lucide="message-square-code" class="w-4 h-4 text-telkom-600"></i>
+              Ketik Kalimat Pesan Rahasia (Huruf Kapital & Spasi):
+            </label>
+            <span class="text-xs text-slate-400 font-medium">A=1 s/d Z=26, Spasi=0</span>
+          </div>
+          <input type="text" id="input-plaintext" value="ADIK MAIN BOLA" oninput="App.updateEncryption()" placeholder="Contoh: AKU MAKAN BERSAMA ADIK" class="w-full bg-white border-2 border-slate-200 rounded-xl px-4 py-3.5 text-base sm:text-lg font-mono font-bold tracking-wider text-slate-900 uppercase focus:outline-none focus:border-telkom-600 focus:ring-4 focus:ring-rose-50 transition shadow-inner">
+
+          <!-- Quick Words from physical Kartu Kata -->
+          <div class="pt-2">
+            <div class="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-500"></i>
+              Klik Cepat dari 32 Kartu Kata Resmi:
+            </div>
+            <div class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-200/80 custom-scroll" id="word-chips">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- STEP-BY-STEP PEDAGOGICAL BREAKDOWN -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-telkom-600"></i>
+              Pembahasan Aljabar & Langkah Pembelajaran Siswa
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Amati bagaimana rumus diturunkan dan setiap karakter dienkripsi.</p>
+          </div>
+          <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            Valid Matematis
+          </span>
+        </div>
+
+        <!-- Tahap 1: Penurunan Komposisi Aljabar Lengkap -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <span>Tahap 1: Pembuktian Penurunan Fungsi Komposisi (6 Langkah Runtut)</span>
+            </span>
+            <span class="text-[11px] font-bold text-rose-700 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+              Aljabar Lengkap
+            </span>
+          </div>
+          <div id="edu-steps-encrypt" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- 6 Step cards rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Tahap 2: Bedah Kasus Nyata (Contoh Hitung Karakter Pertama) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 2: Bedah Kasus Nyata (Perhitungan Step-by-Step Karakter Pertama)
+            </span>
+            <span class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+              Contoh Nyata
+            </span>
+          </div>
+          <div id="edu-sample-encrypt" class="p-4 sm:p-5 bg-gradient-to-r from-rose-50/70 via-white to-amber-50/40 border border-rose-200/80 rounded-2xl shadow-2xs">
+            <!-- Sample Walkthrough rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Educational Insight: Kenapa Spasi Dihitung 0? -->
+        <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200 flex items-start gap-3">
+          <i data-lucide="info" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+          <div class="text-xs text-amber-900 space-y-1">
+            <p class="font-bold">Kenapa Karakter Spasi Dihitung sebagai Bilangan 0?</p>
+            <p class="leading-relaxed">Jika spasi tidak dienkripsi, musuh bisa dengan mudah menebak pola kata berdasarkan panjangnya. Dengan menganggap spasi sebagai <code class="font-mono bg-amber-100 px-1 py-0.5 rounded font-bold">x = 0</code>, spasi akan menghasilkan angka konstan <span id="space-code-val" class="font-mono font-bold text-telkom-700">13</span>, sehingga jarak kata tetap terlindungi secara aman!</p>
+          </div>
+        </div>
+
+        <!-- Tahap 3: Kuantifikasi & Substitusi Table -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 3: Tabel Kuantifikasi Huruf & Evaluasi Hasil Sandi Seluruh Pesan
+            </span>
+            <span class="sm:hidden text-[11px] text-slate-500 flex items-center gap-1 font-medium">
+              <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-slate-400"></i> Geser &rarr;
+            </span>
+          </div>
+          <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table class="w-full min-w-[540px] text-left text-sm font-mono">
+              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 text-xs">
+                <tr>
+                  <th class="p-3">No</th>
+                  <th class="p-3">Karakter</th>
+                  <th class="p-3">Nilai Asli (x)</th>
+                  <th class="p-3">Proses Substitusi Fungsi</th>
+                  <th class="p-3 text-right">Kode Sandi (y)</th>
+                </tr>
+              </thead>
+              <tbody id="table-encrypt-rows" class="divide-y divide-slate-100">
+                <!-- Rows injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Step 3: Deretan Angka Sandi Final -->
+        <div class="bg-slate-900 text-white rounded-2xl p-5 sm:p-6 space-y-3 shadow-md">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <span class="text-xs font-bold tracking-wider uppercase text-rose-300">DERETAN ANGKA SANDI (SIAP DISERAHKAN KE PENERIMA):</span>
+            <div class="flex items-center gap-2">
+              <button onclick="App.copyCipher()" class="px-3.5 py-1.5 bg-telkom-600 hover:bg-telkom-700 text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                Salin Sandi
+              </button>
+              <button onclick="App.goToDecrypt()" class="px-3.5 py-1.5 bg-rose-950/90 hover:bg-rose-900 border border-rose-500/60 text-rose-200 hover:text-white text-xs font-bold rounded-lg transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="arrow-right-circle" class="w-3.5 h-3.5 text-rose-400"></i>
+                Uji di Dekripsi &rarr;
+              </button>
+            </div>
+          </div>
+          <div id="final-cipher-string" class="text-xl sm:text-2xl font-mono font-black text-rose-400 tracking-widest break-all">
+            19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19
+          </div>
+          <p class="text-xs text-slate-400 flex items-center gap-1.5">
+            <i data-lucide="check-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Tersinkronisasi langsung dengan Tab Dekripsi untuk validasi dan pembelajaran murid.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: DEKRIPSI (PENERIMA PESAN & PEMAHAMAN INVERS) -->
+    <!-- ======================================================== -->
+    <section id="tab-decrypt" class="space-y-6 hidden">
+      
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-xs font-extrabold mb-2">
+              <i data-lucide="key" class="w-3.5 h-3.5"></i>
+              PERAN: PENERIMA PESAN (DECRYPTION / INVERS)
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Kalkulator Invers & Pemecah Kode Sandi</h1>
+            <p class="text-slate-600 text-sm mt-1">Gunakan fungsi invers untuk membalikkan operasi matematika dan menerjemahkan deretan angka kode kembali ke kalimat asli.</p>
+          </div>
+          <button onclick="App.loadSample()" class="self-start sm:self-auto px-3.5 py-2 text-xs font-bold text-sky-700 hover:bg-sky-50 border border-sky-200 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            Muat Contoh Sandi
+          </button>
+        </div>
+
+        <!-- Live Auto-Sync Status Banner with Encryption -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-sky-50/80 border border-sky-200/90 rounded-xl text-xs text-sky-950 shadow-2xs">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+            <div>
+              <span class="font-extrabold text-sky-900">Tersinkronisasi Otomatis:</span>
+              <span class="text-sky-700 ml-1">Kartu fungsi dan deretan angka sandi langsung mengikuti apa yang diubah di Tab Enkripsi.</span>
+            </div>
+          </div>
+          <button onclick="App.syncNow()" class="self-start sm:self-auto px-3 py-1.5 bg-white hover:bg-sky-100 border border-sky-300 text-sky-800 font-bold rounded-lg transition flex items-center gap-1.5 shadow-2xs shrink-0">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-sky-600"></i>
+            Sinkronkan Ulang
+          </button>
+        </div>
+
+        <!-- 3-Column Configuration: Kartu f(x), Kartu g(x), Urutan Invers -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Column 1: Kartu f(x) -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Kartu f(x) Terpilih</span>
+                <span id="dec-badge-fx" class="px-2.5 py-0.5 rounded text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">F-01</span>
+              </div>
+              <select id="dec-select-fx" onchange="App.updateDecryption()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <option value="F1">F-01 : f(x) = 2x + 5</option>
+                <option value="F2">F-02 : f(x) = 3x + 1</option>
+                <option value="F3">F-03 : f(x) = x + 4</option>
+                <option value="F4">F-04 : f(x) = 4x - 3</option>
+                <option value="F5">F-05 : f(x) = 5x + 2</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <img id="dec-img-thumb-fx" src="assets/images/cards/F-01.jpeg" alt="F-01" class="w-14 h-20 rounded-md object-cover border border-slate-200 shadow-inner">
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Rumus Asli:</span>
+                <span id="dec-formula-fx" class="text-lg font-mono font-bold text-sky-700">f(x) = 2x + 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Kartu g(x) -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Kartu g(x) Terpilih</span>
+                <span id="dec-badge-gx" class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">G-01</span>
+              </div>
+              <select id="dec-select-gx" onchange="App.updateDecryption()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <option value="G1">G-01 : g(x) = 3x - 2</option>
+                <option value="G2">G-02 : g(x) = 2x + 3</option>
+                <option value="G3">G-03 : g(x) = 4x + 1</option>
+                <option value="G4">G-04 : g(x) = 2x - 1</option>
+                <option value="G5">G-05 : g(x) = x + 5</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-4 p-3 bg-white border border-slate-200 rounded-xl shadow-sm">
+              <img id="dec-img-thumb-gx" src="assets/images/cards/G-01.jpeg" alt="G-01" class="w-14 h-20 rounded-md object-cover border border-slate-200 shadow-inner">
+              <div>
+                <span class="text-[11px] text-slate-400 block font-semibold">Rumus Asli:</span>
+                <span id="dec-formula-gx" class="text-lg font-mono font-bold text-emerald-700">g(x) = 3x - 2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Urutan Invers -->
+          <div class="bg-slate-50/70 border border-slate-200 rounded-2xl p-5 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Urutan Operasi yang Dipakai</span>
+                <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-sky-100 text-sky-800 border border-sky-200">Invers</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="App.setDecOperation('gof')" id="dec-btn-gof" class="py-2.5 px-3 rounded-xl border-2 border-sky-600 bg-sky-50/50 font-mono font-extrabold text-sm text-sky-800 shadow-sm flex items-center justify-center gap-1 transition">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-600"></i>
+                  (g ∘ f)
+                </button>
+                <button onclick="App.setDecOperation('fog')" id="dec-btn-fog" class="py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-mono font-semibold text-sm text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-1 transition">
+                  (f ∘ g)
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-xl p-3 text-center shadow-sm">
+              <span class="text-[11px] text-slate-400 block font-semibold">Rumus Invers Dekripsi:</span>
+              <span id="dec-formula-invers" class="text-base font-mono font-extrabold text-sky-800">(g ∘ f)⁻¹(y) = (y - 13) / 6</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Input Kode Sandi -->
+        <div class="space-y-3">
+          <label class="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="hash" class="w-4 h-4 text-sky-600"></i>
+            Masukkan Deretan Angka Sandi dari Lawan Main (Pisahkan dengan strip, spasi, atau koma):
+          </label>
+          <textarea id="input-cipher" rows="2" oninput="App.updateDecryption()" placeholder="Contoh: 19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19" class="w-full bg-white border-2 border-slate-200 rounded-xl p-4 text-base sm:text-lg font-mono font-bold tracking-wider text-slate-900 focus:outline-none focus:border-sky-600 focus:ring-4 focus:ring-sky-50 transition shadow-inner">19 - 37 - 67 - 79 - 13 - 91 - 19 - 67 - 97 - 13 - 25 - 103 - 85 - 19</textarea>
+        </div>
+
+        <!-- Tahap 1: Penurunan Aljabar Invers Lengkap (Educational) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <span>Tahap 1: Langkah Aljabar Isolasi Variabel (Penurunan Invers 6 Tahap)</span>
+            </span>
+            <span class="text-[11px] font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
+              Aljabar Lengkap
+            </span>
+          </div>
+          <div id="edu-steps-decrypt" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- 6 Step cards rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Tahap 2: Bedah Kasus Nyata (Contoh Hitung Pembalikan Sandi Pertama) -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 2: Bedah Kasus Nyata (Pembalikan Invers Step-by-Step Sandi Pertama)
+            </span>
+            <span class="text-[11px] font-bold text-sky-800 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-200">
+              Contoh Nyata
+            </span>
+          </div>
+          <div id="edu-sample-decrypt" class="p-4 sm:p-5 bg-gradient-to-r from-sky-50/70 via-white to-emerald-50/40 border border-sky-200/80 rounded-2xl shadow-2xs">
+            <!-- Sample Walkthrough rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Tahap 3: Evaluasi Invers Table -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+              Tahap 3: Hasil Evaluasi Invers & Penerjemahan Seluruh Deretan Sandi
+            </span>
+            <span class="sm:hidden text-[11px] text-slate-500 flex items-center gap-1 font-medium">
+              <i data-lucide="move-horizontal" class="w-3.5 h-3.5 text-slate-400"></i> Geser &rarr;
+            </span>
+          </div>
+          <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-2xs">
+            <table class="w-full min-w-[540px] text-left text-sm font-mono">
+              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 text-xs">
+                <tr>
+                  <th class="p-3">No</th>
+                  <th class="p-3">Kode Sandi (y)</th>
+                  <th class="p-3">Perhitungan Invers x = f⁻¹(y)</th>
+                  <th class="p-3">Nilai Huruf (x)</th>
+                  <th class="p-3 text-right">Huruf Asli</th>
+                </tr>
+              </thead>
+              <tbody id="table-decrypt-rows" class="divide-y divide-slate-100">
+                <!-- Rows injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Final Decrypted Message Banner -->
+        <div class="bg-emerald-950 text-white rounded-2xl p-6 space-y-2 shadow-md">
+          <div class="text-xs font-bold tracking-wider uppercase text-emerald-400">PESAN RAHASIA YANG BERHASIL DIPECAHKAN:</div>
+          <div id="final-decrypted-text" class="text-2xl sm:text-3xl font-mono font-black text-white tracking-widest">
+            ADIK MAIN BOLA
+          </div>
+          <p class="text-xs text-emerald-300">Hebat! Seluruh kode sandi berhasil dikembalikan ke bentuk aslinya tanpa kesalahan.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: TABEL KUANTIFIKASI HURUF -->
+    <!-- ======================================================== -->
+    <section id="tab-alphabet" class="space-y-6 hidden">
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Tabel Referensi Kuantifikasi Huruf</h1>
+          <p class="text-slate-600 text-sm mt-1">Standar konversi huruf kapital A=1 s/d Z=26 dan karakter Spasi=0. Klik salah satu huruf untuk mencoba mengonversi.</p>
+        </div>
+
+        <!-- 26 Alphabet Cards Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-13 gap-2.5 text-center font-mono" id="alphabet-grid">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Spasi Card Special -->
+        <div class="p-5 rounded-2xl bg-slate-50 border-2 border-dashed border-rose-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <span class="w-14 h-14 rounded-xl bg-telkom-700 text-white font-mono font-black text-2xl flex items-center justify-center shadow-md shadow-rose-200">0</span>
+            <div>
+              <div class="font-extrabold text-slate-900 text-base">SPASI = 0</div>
+              <p class="text-xs text-slate-500 mt-0.5">Karakter spasi pemisah kata dihitung sebagai bilangan bulat 0.</p>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 italic max-w-sm text-right">
+            Contoh: "MAKAN NASI" &rarr; M=13, A=1, K=11, A=1, N=14, <strong class="text-telkom-700">Spasi=0</strong>, N=14, A=1, S=19, I=9.
+          </div>
+        </div>
+
+        <!-- Live Quick Converter -->
+        <div class="p-6 rounded-2xl bg-slate-900 text-white space-y-4 shadow-sm">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-400 block">Live Converter (Ketik Teks &rarr; Muncul Angkanya):</span>
+          <input type="text" id="live-convert-input" oninput="App.liveConvert()" placeholder="Ketik kata atau kalimat di sini..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3.5 text-white font-mono font-bold uppercase focus:outline-none focus:border-telkom-500">
+          <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+            <span class="text-xs text-slate-400 block mb-1">Hasil Kuantifikasi:</span>
+            <div id="live-convert-output" class="text-lg font-mono font-bold text-rose-400 tracking-wider">
+              -
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: ATURAN & ALUR MAIN -->
+    <!-- ======================================================== -->
+    <section id="tab-rules" class="space-y-6 hidden">
+      <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Aturan & Panduan Permainan Game Fisik</h1>
+          <p class="text-slate-600 text-sm mt-1">Panduan lengkap langkah bermain kartu fisik kriptografi matematika untuk 2 hingga 4 siswa.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="border border-slate-200 rounded-2xl p-6 space-y-4 bg-slate-50/50">
+            <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-telkom-700 text-white text-xs font-bold flex items-center justify-center">1</span>
+              Alur 6 Langkah Permainan
+            </h3>
+            <ol class="space-y-3 text-sm text-slate-600 list-decimal list-inside leading-relaxed">
+              <li><strong>Pilih Pasangan Fungsi:</strong> Pemain menyepakati 1 kartu <span class="font-semibold text-slate-800">f(x)</span> dan 1 kartu <span class="font-semibold text-slate-800">g(x)</span>, serta urutan operasi <span class="font-semibold text-slate-800">(g ∘ f)</span> atau <span class="font-semibold text-slate-800">(f ∘ g)</span>.</li>
+              <li><strong>Susun Kalimat:</strong> Pengirim mengambil kartu kata acak dan menyusun kalimat rahasia (cth: <em>ADIK MAIN BOLA</em>).</li>
+              <li><strong>Kuantifikasi Huruf:</strong> Pengirim mengubah setiap huruf kapital menjadi angka (<span class="font-semibold text-slate-800">A = 1</span> sampai <span class="font-semibold text-slate-800">Z = 26</span>, Spasi = <span class="font-semibold text-slate-800">0</span>).</li>
+              <li><strong>Enkripsi Komposisi:</strong> Setiap angka dimasukkan ke rumus fungsi komposisi untuk mendapatkan deretan angka sandi.</li>
+              <li><strong>Kirim Sandi:</strong> Pengirim menyerahkan deretan angka kode ke pemain lawan (penerima).</li>
+              <li><strong>Dekripsi Invers:</strong> Penerima menurunkan fungsi invers <span class="font-semibold text-slate-800">(g ∘ f)⁻¹(y)</span>, menghitung nilai <span class="font-semibold text-slate-800">x</span>, dan membaca kembali pesan asli!</li>
+            </ol>
+          </div>
+
+          <div class="border border-slate-200 rounded-2xl p-6 space-y-4 bg-slate-50/50">
+            <h3 class="font-extrabold text-slate-900 text-base flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-telkom-700 text-white text-xs font-bold flex items-center justify-center">2</span>
+              Sistem Skor & Poin Penilaian
+            </h3>
+            <div class="overflow-hidden border border-slate-200 rounded-xl bg-white">
+              <table class="w-full text-left text-sm">
+                <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-xs">
+                  <tr>
+                    <th class="p-3">Aktivitas Pemain</th>
+                    <th class="p-3 text-right">Poin</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-600">
+                  <tr>
+                    <td class="p-3">Menyusun kalimat kata yang logis</td>
+                    <td class="p-3 text-right font-mono font-bold text-slate-900">+5 Poin</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3">Enkripsi seluruh huruf dengan benar</td>
+                    <td class="p-3 text-right font-mono font-bold text-slate-900">+10 Poin</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3">Mendekripsi seluruh pesan rahasia dengan benar</td>
+                    <td class="p-3 text-right font-mono font-bold text-slate-900">+15 Poin</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 text-emerald-700 font-semibold">Bonus: Selesai tanpa kesalahan hitung</td>
+                    <td class="p-3 text-right font-mono font-bold text-emerald-700">+5 Poin</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-800 leading-relaxed">
+              <strong>Tips Integritas Matematika:</strong> Karena rentang huruf adalah <strong>A = 1</strong> sampai <strong>Z = 26</strong>, hasil perhitungan invers wajib berupa bilangan bulat <strong>0 sampai 26</strong>. Jika menghasilkan pecahan atau desimal, pastikan periksa kembali aljabar Anda!
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- MODAL: KARTU NFC TERDETEKSI (LANGSUNG MUNCUL SAAT DI-TAP) -->
+  <!-- ======================================================== -->
+  <div id="nfc-card-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 modal-animate relative">
+      
+      <!-- Close Button -->
+      <button onclick="NFCReader.closeNfcModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- NFC Detected Badge -->
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-purple-600 nfc-pulse"></span>
+        <span class="text-xs font-extrabold uppercase tracking-wider text-purple-700">Kartu Fisik Terdeteksi via NFC</span>
+      </div>
+
+      <!-- Card Thumbnail & Details -->
+      <div class="flex gap-4 items-center">
+        <img id="nfc-modal-img" src="assets/images/cards/F-01.jpeg" alt="NFC Card" class="w-20 h-28 rounded-xl object-cover border border-slate-200 shadow-md">
+        <div class="space-y-1.5 flex-1">
+          <span id="nfc-modal-badge" class="px-2 py-0.5 rounded text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">F-01</span>
+          <h3 id="nfc-modal-title" class="font-extrabold text-slate-900 text-lg leading-snug">Kartu Fungsi F-01</h3>
+          <p id="nfc-modal-desc" class="text-xs text-slate-500 line-clamp-2">Fungsi linear dengan kemiringan gradien 2.</p>
+        </div>
+      </div>
+
+      <!-- Math Formula Display -->
+      <div id="nfc-modal-math" class="pt-1">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Action Buttons -->
+      <div id="nfc-modal-actions" class="flex gap-2 pt-2">
+        <!-- Rendered via JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="app-toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-xl transition-all duration-300 transform translate-y-24 opacity-0 flex items-center gap-2 border border-slate-800">
+    <!-- Toast message -->
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500 space-y-2">
+    <div class="flex items-center justify-center gap-2">
+      <img src="assets/images/logo-telkom-schools.png" alt="Logo Telkom Schools" class="w-6 h-6 object-contain">
+      <span class="font-extrabold text-slate-800 tracking-tight">SMK TELKOM PURWOKERTO</span>
+    </div>
+    <p class="font-bold text-slate-700">SECRET MESSAGE — Proyek Penilaian Sumatif Akhir Semester (PSAS) Matematika XI</p>
+    <p>Pengembangan Perangkat Lunak & Gim (PPLG) • Tahun Ajaran 2026/2027</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/card-data.js"></script>
+  <script src="assets/js/cipher-engine.js"></script>
+  <script src="assets/js/nfc-reader.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
