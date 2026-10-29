@@ -420,43 +420,122 @@ const App = {
     // Already populated in HTML
   },
 
-  // 6. Alphabet Grid Setup
+  // 6. Calculator Keypad Setup (1 Baris Isi 3 Kotakan di HP)
   setupAlphabetGrid() {
-    const grid = document.getElementById('alphabet-grid');
+    this.setupCalculatorKeypad();
+  },
+
+  setupCalculatorKeypad() {
+    const grid = document.getElementById('calc-keypad-grid');
     if (!grid) return;
     grid.innerHTML = '';
 
+    // 26 Huruf: A sampai Z
     for (let i = 1; i <= 26; i++) {
       const char = String.fromCharCode(64 + i);
-      const card = document.createElement('div');
-      card.className = 'p-3 bg-white border border-slate-200 rounded-xl text-center hover:border-telkom-500 hover:shadow-md transition cursor-pointer card-hover-effect';
-      card.onclick = () => {
-        const liveIn = document.getElementById('live-convert-input');
-        if (liveIn) {
-          liveIn.value += char;
-          App.liveConvert();
-        }
-      };
-      card.innerHTML = `
-        <div class="text-xl font-black text-slate-900">${char}</div>
-        <div class="text-xs font-bold text-telkom-700 mt-1">${i}</div>
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bg-white hover:bg-rose-50 border-2 border-slate-200 hover:border-telkom-500 rounded-2xl py-3 px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
+      btn.onclick = () => App.calcPressKey(char);
+      btn.innerHTML = `
+        <span class="text-2xl font-black text-slate-900 group-hover:text-telkom-700 leading-none">${char}</span>
+        <span class="text-xs font-extrabold text-telkom-700 bg-rose-50 group-hover:bg-rose-100 px-2 py-0.5 rounded-full border border-rose-200/80">${i}</span>
       `;
-      grid.appendChild(card);
+      grid.appendChild(btn);
+    }
+
+    // Kotak ke-27: SPASI = 0 (Menjadikan tepat 9 baris x 3 kolom)
+    const spaceBtn = document.createElement('button');
+    spaceBtn.type = 'button';
+    spaceBtn.className = 'bg-slate-100 hover:bg-rose-50 border-2 border-dashed border-rose-300 hover:border-telkom-500 rounded-2xl py-3 px-2 text-center transition active:scale-95 shadow-2xs flex flex-col items-center justify-center gap-1 group cursor-pointer';
+    spaceBtn.onclick = () => App.calcPressKey(' ');
+    spaceBtn.innerHTML = `
+      <span class="text-sm font-black text-slate-800 group-hover:text-telkom-700 leading-none flex items-center gap-1">␣ SPASI</span>
+      <span class="text-xs font-black text-white bg-telkom-700 px-2.5 py-0.5 rounded-full shadow-2xs">0</span>
+    `;
+    grid.appendChild(spaceBtn);
+
+    this.updateCalcDisplay();
+  },
+
+  calcPressKey(char) {
+    const input = document.getElementById('calc-input-text');
+    if (!input) return;
+    input.value += char;
+    this.updateCalcDisplay();
+  },
+
+  calcBackspace() {
+    const input = document.getElementById('calc-input-text');
+    if (!input || !input.value) return;
+    input.value = input.value.slice(0, -1);
+    this.updateCalcDisplay();
+  },
+
+  calcClear() {
+    const input = document.getElementById('calc-input-text');
+    if (!input) return;
+    input.value = '';
+    this.updateCalcDisplay();
+  },
+
+  onCalcTextInput() {
+    this.updateCalcDisplay();
+  },
+
+  updateCalcDisplay() {
+    const input = document.getElementById('calc-input-text');
+    const output = document.getElementById('calc-output-numbers');
+    const countEl = document.getElementById('calc-char-count');
+    if (!input || !output) return;
+
+    const text = input.value.toUpperCase();
+    if (countEl) {
+      countEl.innerText = `${text.length} karakter`;
+    }
+
+    const numbers = [];
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (ALPHABET_MAP[c] !== undefined) {
+        numbers.push(ALPHABET_MAP[c]);
+      }
+    }
+
+    output.innerText = numbers.length > 0 ? numbers.join(', ') : '-';
+  },
+
+  copyCalcNumbers() {
+    const output = document.getElementById('calc-output-numbers');
+    if (!output || output.innerText === '-') return;
+    navigator.clipboard.writeText(output.innerText).then(() => {
+      if (window.NFCReader) {
+        NFCReader.showToast('Angka kuantifikasi berhasil disalin!');
+      }
+    });
+  },
+
+  applyCalcToEncrypt() {
+    const input = document.getElementById('calc-input-text');
+    if (!input || !input.value.trim()) {
+      if (window.NFCReader) {
+        NFCReader.showToast('Ketik atau tekan huruf terlebih dahulu!');
+      }
+      return;
+    }
+    const encInput = document.getElementById('input-plaintext');
+    if (encInput) {
+      encInput.value = input.value.toUpperCase().trim();
+    }
+    this.updateEncryption();
+    this.switchTab('tab-encrypt');
+    if (window.NFCReader) {
+      NFCReader.showToast('Kalimat berhasil dipasang ke mode Enkripsi!');
     }
   },
 
   liveConvert() {
-    const text = document.getElementById('live-convert-input').value.toUpperCase();
-    const output = document.getElementById('live-convert-output');
-    const numbers = [];
-
-    for (let i = 0; i < text.length; i++) {
-      const c = text[i];
-      if (ALPHABET_MAP[c] !== undefined) {
-        numbers.push(`${c}=${ALPHABET_MAP[c]}`);
-      }
-    }
-    output.innerText = numbers.length > 0 ? numbers.join('  •  ') : '-';
+    this.updateCalcDisplay();
   },
 
   // 7. Utility: Copy to Clipboard

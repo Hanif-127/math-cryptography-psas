@@ -104,7 +104,9 @@ code, kbd, samp, pre, .font-mono {
 
   /* Safe area padding for notch devices & mobile overlays */
   footer {
-    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   /* Prevent numbers from splitting awkwardly across lines */
@@ -112,4 +114,14 @@ code, kbd, samp, pre, .font-mono {
     word-break: normal;
     overflow-wrap: break-word;
   }
+}
+
+/* Calculator Keypad Styling & Active States */
+.calc-key-btn {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.calc-key-btn:active {
+  transform: scale(0.94);
 }
