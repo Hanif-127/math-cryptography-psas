@@ -24,6 +24,9 @@ const NFCReader = {
             if (record.recordType === 'text') {
               const textDecoder = new TextDecoder(record.encoding || 'utf-8');
               textData = textDecoder.decode(record.data);
+            } else if (record.recordType === 'url') {
+              const textDecoder = new TextDecoder();
+              textData = textDecoder.decode(record.data);
             }
           }
           if (textData) {
@@ -41,8 +44,23 @@ const NFCReader = {
     }
   },
 
-  // Process detected card code
+  // Process detected card code (bisa ID langsung 'F-01', atau URL 'https://.../?card=F-01')
   handleCardData(code, serialNumber = '') {
+    if (!code) return;
+    code = code.trim();
+
+    // Jika input berupa URL atau query param, ambil nilai param 'card'
+    if (code.includes('card=')) {
+      try {
+        const parsedUrl = new URL(code, window.location.origin);
+        const cardVal = parsedUrl.searchParams.get('card');
+        if (cardVal) code = cardVal;
+      } catch (e) {
+        const match = code.match(/card=([A-Za-z0-9_-]+)/i);
+        if (match && match[1]) code = match[1];
+      }
+    }
+
     code = code.toUpperCase().trim();
     let cardInfo = null;
 
@@ -174,12 +192,16 @@ const NFCReader = {
       mathEl.innerHTML = `
         <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-center">
           <span class="text-xs text-rose-600 block font-semibold mb-0.5">Fungsi Kartu:</span>
-          <span class="text-sm font-semibold text-rose-900">Bantuan referensi kuantifikasi huruf dan aturan aljabar.</span>
+          <span class="text-sm font-semibold text-rose-900">${card.id === 'H-01' ? 'Tabel konversi huruf kapital A=1 s/d Z=26 dan Spasi=0.' : 'Panduan alur rumus enkripsi, dekripsi, dan integritas aljabar.'}</span>
         </div>
       `;
-      actionsEl.innerHTML = `
+      actionsEl.innerHTML = card.id === 'H-01' ? `
         <button onclick="App.switchTab('tab-alphabet'); NFCReader.closeNfcModal();" class="w-full py-2.5 px-4 bg-telkom-700 hover:bg-telkom-800 text-white text-xs font-bold rounded-xl transition">
-          Buka Tabel Huruf
+          Buka Kalkulator Kuantifikasi
+        </button>
+      ` : `
+        <button onclick="App.switchTab('tab-rules'); NFCReader.closeNfcModal();" class="w-full py-2.5 px-4 bg-telkom-700 hover:bg-telkom-800 text-white text-xs font-bold rounded-xl transition">
+          Buka Panduan Aturan & Aljabar
         </button>
       `;
       imgEl.src = card.image;

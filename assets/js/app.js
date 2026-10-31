@@ -19,6 +19,21 @@ const App = {
     if (window.NFCReader) {
       NFCReader.initAutoReader();
     }
+
+    // Cek parameter URL (misal: saat kartu NFC di-tap dari luar browser: ?card=F-01)
+    const urlParams = new URLSearchParams(window.location.search);
+    const cardParam = urlParams.get('card');
+    const tabParam = urlParams.get('tab');
+
+    if (tabParam) {
+      this.switchTab(tabParam);
+    }
+
+    if (cardParam && window.NFCReader) {
+      setTimeout(() => {
+        NFCReader.handleCardData(cardParam);
+      }, 350);
+    }
   },
 
   // 1. Tab Switching Controller
