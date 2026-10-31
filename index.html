@@ -42,23 +42,23 @@
   <!-- ======================================================== -->
   <!-- TOP BRANDING & NAVIGATION BAR (STUDENT-FOCUSED) -->
   <!-- ======================================================== -->
-  <header class="border-b border-slate-200 bg-white sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-40 shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 sm:h-16 gap-2">
         
         <!-- Logo & School Brand -->
-        <div class="flex items-center gap-3">
-          <img src="assets/images/logo-telkom-schools.png" alt="Logo Telkom Schools" class="w-10 h-10 object-contain shrink-0 drop-shadow-xs">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg">SECRET MESSAGE</span>
-              <span class="text-[10px] sm:text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full bg-rose-50 text-telkom-700 border border-rose-200">PSAS MATEMATIKA</span>
+        <div class="flex items-center gap-2.5 min-w-0">
+          <img src="assets/images/logo-telkom-schools.png" alt="Logo Telkom Schools" class="w-8 h-8 sm:w-10 sm:h-10 object-contain shrink-0 drop-shadow-2xs">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-slate-900 tracking-tight text-sm sm:text-base whitespace-nowrap truncate leading-none">SECRET MESSAGE</span>
+              <span class="hidden sm:inline-flex text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-full bg-rose-50 text-telkom-700 border border-rose-200 shrink-0">PSAS MATEMATIKA</span>
             </div>
-            <p class="text-[11px] sm:text-xs text-slate-500 font-medium">SMK Telkom Purwokerto • XI PPLG 1</p>
+            <p class="text-[10px] sm:text-xs text-slate-500 font-medium whitespace-nowrap truncate leading-tight mt-0.5">SMK Telkom Purwokerto • XI PPLG 1</p>
           </div>
         </div>
 
-        <!-- Student Gameplay Navigation (NO Print tab, NO NFC tab) -->
+        <!-- Student Gameplay Navigation (Desktop) -->
         <nav class="hidden md:flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-xl border border-slate-200/80">
           <button onclick="App.switchTab('tab-encrypt')" id="btn-tab-encrypt" class="tab-btn active px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
             <i data-lucide="lock" class="w-3.5 h-3.5"></i>
@@ -79,10 +79,10 @@
         </nav>
 
         <!-- NFC Live Status & School Level Info -->
-        <div class="flex items-center gap-2">
-          <button id="nfc-live-pill" onclick="NFCReader.manualActivate()" type="button" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition border border-emerald-300 bg-emerald-50 text-emerald-800 shadow-2xs cursor-pointer">
-            <span id="nfc-live-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span id="nfc-live-text">NFC Siap Tap</span>
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="nfc-live-pill" onclick="NFCReader.manualActivate()" type="button" class="shrink-0 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold transition border border-emerald-300 bg-emerald-50 text-emerald-800 shadow-2xs cursor-pointer whitespace-nowrap">
+            <span id="nfc-live-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+            <span id="nfc-live-text" class="whitespace-nowrap">NFC Siap Tap</span>
           </button>
           <span class="hidden sm:inline-block text-xs font-semibold text-slate-400 bg-slate-50 px-3 py-1 rounded-full border border-slate-200">
             Tahun Ajaran 2026/2027
@@ -92,22 +92,22 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Bar (Sticky Thumb-Friendly Grid) -->
-    <div class="md:hidden border-t border-slate-200/90 px-2 py-2 grid grid-cols-4 gap-1.5 bg-white/95 backdrop-blur-md sticky top-16 z-30 shadow-xs">
-      <button onclick="App.switchTab('tab-encrypt')" id="m-btn-tab-encrypt" class="tab-btn active py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 transition">
-        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+    <!-- Mobile Navigation Bar (Clean Segmented Control) -->
+    <div class="md:hidden border-t border-slate-100 px-2.5 py-1.5 grid grid-cols-4 gap-1.5 bg-slate-50/70 backdrop-blur-md">
+      <button onclick="App.switchTab('tab-encrypt')" id="m-btn-tab-encrypt" class="tab-btn active py-1.5 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-0.5 transition">
+        <i data-lucide="lock" class="w-4 h-4"></i>
         <span>Enkripsi</span>
       </button>
-      <button onclick="App.switchTab('tab-decrypt')" id="m-btn-tab-decrypt" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
-        <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+      <button onclick="App.switchTab('tab-decrypt')" id="m-btn-tab-decrypt" class="tab-btn py-1.5 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="unlock" class="w-4 h-4"></i>
         <span>Dekripsi</span>
       </button>
-      <button onclick="App.switchTab('tab-alphabet')" id="m-btn-tab-alphabet" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
-        <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+      <button onclick="App.switchTab('tab-alphabet')" id="m-btn-tab-alphabet" class="tab-btn py-1.5 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="table-2" class="w-4 h-4"></i>
         <span>Huruf</span>
       </button>
-      <button onclick="App.switchTab('tab-rules')" id="m-btn-tab-rules" class="tab-btn py-2 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-1 text-slate-600 hover:text-slate-900 transition">
-        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+      <button onclick="App.switchTab('tab-rules')" id="m-btn-tab-rules" class="tab-btn py-1.5 px-1 rounded-xl text-[11px] font-bold text-center flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="book-open" class="w-4 h-4"></i>
         <span>Panduan</span>
       </button>
     </div>
