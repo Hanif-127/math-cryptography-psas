@@ -8,39 +8,77 @@ const NFCReader = {
   ndef: null,
 
   initAutoReader() {
+    this.updateStatusPill();
     return this.init();
   },
 
   async init() {
-    if ('NDEFReader' in window) {
-      try {
+    if (!('NDEFReader' in window)) {
+      this.updateStatusPill('unsupported');
+      return;
+    }
+
+    try {
+      if (!this.ndef) {
         this.ndef = new NDEFReader();
-        await this.ndef.scan();
-        this.isScanning = true;
-
-        this.ndef.addEventListener('reading', ({ message, serialNumber }) => {
-          let textData = '';
-          for (const record of message.records) {
-            if (record.recordType === 'text') {
-              const textDecoder = new TextDecoder(record.encoding || 'utf-8');
-              textData = textDecoder.decode(record.data);
-            } else if (record.recordType === 'url') {
-              const textDecoder = new TextDecoder();
-              textData = textDecoder.decode(record.data);
-            }
-          }
-          if (textData) {
-            this.handleCardData(textData.trim(), serialNumber);
-          }
-        });
-
-        this.ndef.addEventListener('readingerror', () => {
-          this.showToast('Gagal membaca kartu NFC. Coba tempelkan ulang.');
-        });
-
-      } catch (err) {
-        console.log('NFC standby or waiting for user tap');
       }
+      await this.ndef.scan();
+      this.isScanning = true;
+      this.updateStatusPill('active');
+
+      this.ndef.addEventListener('reading', ({ message, serialNumber }) => {
+        let textData = '';
+        for (const record of message.records) {
+          if (record.recordType === 'text') {
+            const textDecoder = new TextDecoder(record.encoding || 'utf-8');
+            textData = textDecoder.decode(record.data);
+          } else if (record.recordType === 'url') {
+            const textDecoder = new TextDecoder();
+            textData = textDecoder.decode(record.data);
+          }
+        }
+        if (textData) {
+          this.handleCardData(textData.trim(), serialNumber);
+        }
+      });
+
+      this.ndef.addEventListener('readingerror', () => {
+        this.showToast('Gagal membaca kartu NFC. Coba tempelkan ulang.');
+      });
+
+    } catch (err) {
+      this.isScanning = false;
+      this.updateStatusPill('waiting_click');
+    }
+  },
+
+  async manualActivate() {
+    if (!('NDEFReader' in window)) {
+      this.showToast('Browser ini belum mendukung Web NFC. Gunakan Chrome di HP Android.');
+      return;
+    }
+    await this.init();
+    if (this.isScanning) {
+      this.showToast('✅ Sensor NFC Browser Aktif! Tempelkan kartu kapan saja.');
+    }
+  },
+
+  updateStatusPill(status) {
+    const pill = document.getElementById('nfc-live-pill');
+    const text = document.getElementById('nfc-live-text');
+    const dot = document.getElementById('nfc-live-dot');
+    if (!pill || !text) return;
+
+    if (status === 'active' || this.isScanning) {
+      pill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition border border-emerald-300 bg-emerald-50 text-emerald-800 shadow-2xs';
+      text.innerText = 'NFC Siap Tap';
+      if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+    } else if (status === 'unsupported') {
+      pill.classList.add('hidden');
+    } else {
+      pill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition border border-rose-300 bg-rose-50 text-telkom-700 shadow-2xs cursor-pointer hover:bg-rose-100';
+      text.innerText = 'Aktifkan NFC Tap';
+      if (dot) dot.className = 'w-2 h-2 rounded-full bg-rose-500';
     }
   },
 
@@ -100,9 +138,71 @@ const NFCReader = {
     }
 
     if (cardInfo) {
-      this.openNfcModal(cardInfo);
+      // Langsung ubah dropdown / nilai tanpa perlu modal yang mengganggu
+      this.applyCardDirectly(cardInfo);
     } else {
       this.showToast(`Kartu NFC terdeteksi: "${code}".`);
+    }
+  },
+
+  // Langsung terapkan kartu ke aplikasi (Drop-in Dropdown Replacement)
+  applyCardDirectly(cardInfo) {
+    if (!cardInfo) return;
+
+    if (cardInfo.type === 'f') {
+      const selFx = document.getElementById('select-fx');
+      const decFx = document.getElementById('dec-select-fx');
+      if (selFx) selFx.value = cardInfo.key;
+      if (decFx) decFx.value = cardInfo.key;
+
+      // Update kalkulasi tanpa mereset kartu g(x)!
+      App.updateEncryption();
+      App.updateDecryption();
+      App.saveState();
+
+      this.showToast(`⚡ NFC: Kartu f(x) diganti ke ${cardInfo.data.id} (${cardInfo.data.formula})`);
+      if (navigator.vibrate) navigator.vibrate(50);
+
+    } else if (cardInfo.type === 'g') {
+      const selGx = document.getElementById('select-gx');
+      const decGx = document.getElementById('dec-select-gx');
+      if (selGx) selGx.value = cardInfo.key;
+      if (decGx) decGx.value = cardInfo.key;
+
+      // Update kalkulasi tanpa mereset kartu f(x)!
+      App.updateEncryption();
+      App.updateDecryption();
+      App.saveState();
+
+      this.showToast(`⚡ NFC: Kartu g(x) diganti ke ${cardInfo.data.id} (${cardInfo.data.formula})`);
+      if (navigator.vibrate) navigator.vibrate(50);
+
+    } else if (cardInfo.type === 'word') {
+      const input = document.getElementById('input-plaintext');
+      if (input) {
+        let cur = input.value.trim();
+        input.value = cur ? cur + ' ' + cardInfo.data.word : cardInfo.data.word;
+      }
+      App.updateEncryption();
+      App.saveState();
+
+      this.showToast(`⚡ NFC: Kata "${cardInfo.data.word}" ditambahkan ke kalimat!`);
+      if (navigator.vibrate) navigator.vibrate(50);
+
+    } else if (cardInfo.type === 'helper') {
+      if (cardInfo.key === 'H-01') {
+        App.switchTab('tab-alphabet');
+        this.showToast(`⚡ NFC: Membuka Kalkulator Kuantifikasi Huruf`);
+      } else if (cardInfo.key === 'H-02') {
+        App.switchTab('tab-rules');
+        this.showToast(`⚡ NFC: Membuka Panduan Aturan & Operasi`);
+      }
+      if (navigator.vibrate) navigator.vibrate(50);
+    }
+
+    // Bersihkan URL query parameter agar tidak memicu reload jika browser di-refresh
+    if (window.location.search) {
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   },
 

@@ -12,15 +12,26 @@ const App = {
     this.setupDropdowns();
     this.setupQuickWords();
     this.setupAlphabetGrid();
+
+    // 1. Pulihkan pilihan kartu & pesan dari sesi sebelumnya (localStorage)
+    this.restoreState();
+
     this.updateEncryption();
     this.updateDecryption();
 
-    // Start background NFC listener automatically on Android Chrome
+    // 2. Siapkan listener Web NFC di HP Android
     if (window.NFCReader) {
       NFCReader.initAutoReader();
+      const triggerNFC = () => {
+        if (!NFCReader.isScanning) {
+          NFCReader.init();
+        }
+      };
+      document.addEventListener('pointerdown', triggerNFC, { once: true });
+      document.addEventListener('click', triggerNFC, { once: true });
     }
 
-    // Cek parameter URL (misal: saat kartu NFC di-tap dari luar browser: ?card=F-01)
+    // 3. Cek parameter URL (misal: saat kartu NFC di-tap pertama kali dari luar browser: ?card=F-01)
     const urlParams = new URLSearchParams(window.location.search);
     const cardParam = urlParams.get('card');
     const tabParam = urlParams.get('tab');
@@ -30,10 +41,64 @@ const App = {
     }
 
     if (cardParam && window.NFCReader) {
-      setTimeout(() => {
-        NFCReader.handleCardData(cardParam);
-      }, 350);
+      NFCReader.handleCardData(cardParam);
     }
+  },
+
+  // State Persistence Engine (localStorage)
+  saveState() {
+    try {
+      const state = {
+        fx: document.getElementById('select-fx')?.value || 'F1',
+        gx: document.getElementById('select-gx')?.value || 'G1',
+        op: this.currentOp,
+        decFx: document.getElementById('dec-select-fx')?.value || 'F1',
+        decGx: document.getElementById('dec-select-gx')?.value || 'G1',
+        decOp: this.currentDecOp,
+        text: document.getElementById('input-plaintext')?.value || ''
+      };
+      localStorage.setItem('secret_message_app_state', JSON.stringify(state));
+    } catch (e) {}
+  },
+
+  restoreState() {
+    try {
+      const raw = localStorage.getItem('secret_message_app_state');
+      if (!raw) return;
+      const state = JSON.parse(raw);
+      if (state.fx && document.getElementById('select-fx')) {
+        document.getElementById('select-fx').value = state.fx;
+      }
+      if (state.gx && document.getElementById('select-gx')) {
+        document.getElementById('select-gx').value = state.gx;
+      }
+      if (state.decFx && document.getElementById('dec-select-fx')) {
+        document.getElementById('dec-select-fx').value = state.decFx;
+      }
+      if (state.decGx && document.getElementById('dec-select-gx')) {
+        document.getElementById('dec-select-gx').value = state.decGx;
+      }
+      if (state.op) {
+        this.currentOp = state.op;
+        const btnGof = document.getElementById('btn-op-gof');
+        const btnFog = document.getElementById('btn-op-fog');
+        if (btnGof && btnFog) {
+          if (state.op === 'gof') {
+            btnGof.className = 'py-2.5 px-3 rounded-xl border-2 border-telkom-600 bg-rose-50/50 font-mono font-extrabold text-xs sm:text-sm text-telkom-800 shadow-sm flex items-center justify-center gap-1.5 transition';
+            btnFog.className = 'py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-mono font-semibold text-xs sm:text-sm text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-1.5 transition';
+          } else {
+            btnFog.className = 'py-2.5 px-3 rounded-xl border-2 border-telkom-600 bg-rose-50/50 font-mono font-extrabold text-xs sm:text-sm text-telkom-800 shadow-sm flex items-center justify-center gap-1.5 transition';
+            btnGof.className = 'py-2.5 px-3 rounded-xl border border-slate-300 bg-white font-mono font-semibold text-xs sm:text-sm text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-1.5 transition';
+          }
+        }
+      }
+      if (state.decOp) {
+        this.currentDecOp = state.decOp;
+      }
+      if (state.text !== undefined && document.getElementById('input-plaintext')) {
+        document.getElementById('input-plaintext').value = state.text;
+      }
+    } catch (e) {}
   },
 
   // 1. Tab Switching Controller
@@ -407,6 +472,7 @@ const App = {
 
     document.getElementById('final-decrypted-text').innerText = decResult.decryptedText || '-';
     if (window.lucide) lucide.createIcons();
+    this.saveState();
   },
 
   // 4. Quick Words Setup
